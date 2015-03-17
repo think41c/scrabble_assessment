@@ -78,8 +78,42 @@ class ScrabbleTest < Minitest::Test
   def test_it_can_see_if_your_words_win
     tests  = Scrabble.new
     words  = %w(EEE EE EA A)
-    result = tests.total_word_score(words)
-    assert_equal false, result
+    result = tests.win?(words)
+    assert_equal "You don't win", result
   end
+
+  def test_it_can_find_the_letter_scored_the_highest
+    tests  = Scrabble.new
+    result = tests.letter.values.max
+    assert_equal 10, result
+  end
+
+  def test_it_can_find_letter_occuring_most
+    tests  = Scrabble.new
+    word   = "scabs"
+    result = tests.most_occuring_letter(word)
+    assert_equal "S", result
+  end
+
+  def test_it_can_find_letter_occuring_least
+    tests  = Scrabble.new
+    word   = "Plop"
+    result = tests.least_occuring_letter(word)
+    assert_equal "L", result
+  end
+
+  def test_when_tied_fewest_letters_wins
+    test   = Scrabble.new
+    word1  = "eaiaeiaeie"
+    word2  = "z"
+    test.score(word1)
+  end
+
+  def test_show_avg_score_of_letters_played_for_player
+    tony   = Player.new("tony")
+    result = tony.play_a_word("ZI")
+    assert_equal 5, result
+  end
+
 
 end

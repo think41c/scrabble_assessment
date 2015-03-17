@@ -78,11 +78,78 @@ class Scrabble
       "You don't win"
     end
   end
+
+  def most_occuring_letter(word)
+    letter_occurance = Hash.new(0)
+    word.upcase.each_char { |x| letter_occurance[x] += 1}
+    letter_occurance.key(letter_occurance.values.max) 
+  end
+
+  def least_occuring_letter(word)
+    letter_occurance = Hash.new(0)
+    word.upcase.each_char { |x| letter_occurance[x] += 1}
+    letter_occurance.key(letter_occurance.values.min) 
+  end
+
+  def return_fewest_letter_tying_word_wins(word1, word2)
+    word1_pts = score(word1.upcase)
+    word2_pts = score(word2.upcase)
+    unless word1_pts != word2_pts
+      if word1.length < word2.length
+        word1
+      else
+        word2
+      end
+    end
+  end
+
 end
 
+class Player
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+    @all_words_played = []
+  end
+
+  def score 
+    20
+  end
+
+  def play_a_word(word)
+    game = Scrabble.new
+    game.score(word)
+    @all_words_played << word
+    average_the_letters_score(word)
+  end
+
+  def average_the_letters_score(word)
+    result = 0 
+    calc = Scrabble.new
+    pts_n_lets = Hash.new(0)
+    result = calc.letter_score(word)
+    result.values.reduce(:+)/(result.values.length)
+    # word.upcase.each_char(|x| pts_n_lets[x] += 1)
+  end
+
+end
+
+
 scrabble = Scrabble.new
-words = ["hello", "zzz", "j"]
-p scrabble.total_word_score(words)
-p scrabble.win?(words)
+# words = ["hello", "zzz", "j"]
+# p scrabble.total_word_score(words)
+# p scrabble.win?(words)
+# p scrabble.letter.values.max
 # two same, least number of letters win
+# p scrabble.return_fewest_letter_tying_word_wins("Z", "AAEAAAAAAA")
 # max_by
+
+# tony = Player.new("Tony")
+# p tony.score
+# t_first_word = tony.play_a_word("T")
+# p t_first_word
+josh = Player.new("Josh")
+j_first_word = josh.play_a_word("ZI")
+p j_first_word
+
